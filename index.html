@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Divertissement Hacking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: black;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+        .container {
+            position: relative;
+            width: 120px;
+            height: 180px;
+        }
+        .head {
+            width: 100px;
+            height: 100px;
+            background: black;
+            border-radius: 50%;
+            border: 3px solid #0F0;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .eyes {
+            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 35%;
+        }
+        .eye {
+            width: 12px;
+            height: 12px;
+            background: #0F0;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #0F0;
+        }
+        .flames {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+        }
+        .flame {
+            position: absolute;
+            width: 35px;
+            height: 50px;
+            background: #0F0;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: flicker 0.5s infinite alternate ease-in-out;
+        }
+        .flame:nth-child(1) {
+            left: 10px;
+            animation-delay: 0.1s;
+        }
+        .flame:nth-child(2) {
+            left: 45px;
+            animation-delay: 0.2s;
+        }
+        .flame:nth-child(3) {
+            left: 80px;
+            animation-delay: 0.3s;
+        }
+        @keyframes flicker {
+            0% {
+                transform: scaleY(1) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scaleY(1.5) translateY(-10px);
+                opacity: 0.5;
+            }
+        }
+        .title {
+            color: #0F0;
+            font-family: monospace;
+            font-size: 24px;
+            text-align: center;
+            text-shadow: 0 0 10px #0F0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+    <h1 class="title">Système en Intrusion...</h1>
+
+    <div class="container">
+        <div class="flames">
+            <div class="flame"></div>
+            <div class="flame"></div>
+            <div class="flame"></div>
+        </div>
+        <div class="head">
+            <div class="eyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="hackingSound" src="https://www.fesliyanstudios.com/play-mp3/4384" loop></audio>
+    <audio id="typingSound" src="https://www.fesliyanstudios.com/play-mp3/586" loop></audio>
+
+    <script>
+        // Effet Matrix
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()-=_+";
+        const charArray = characters.split("");
+
+        const fontSize = 16;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = new Array(columns).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0F0";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Lecture automatique des sons après interaction
+        function playSounds() {
+            const hackingSound = document.getElementById("hackingSound");
+            const typingSound = document.getElementById("typingSound");
+
+            hackingSound.play();
+            typingSound.play();
+        }
+
+        // Événement pour déclencher le son sur interaction
+        document.addEventListener("click", playSounds);
+        document.addEventListener("keydown", playSounds);
+    </script>
+
+</body>
+</html>
