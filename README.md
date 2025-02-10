@@ -1,7 +1,6 @@
 # HeandAlarm
 HEAND-ALARM
 
-Voici le code pour un fichier `README.md` que vous pouvez copier-coller directement. Il est prêt à être utilisé et inclut une section pour ajouter une image de représentation.
 
 ```markdown
 # Page de Divertissement Hacking
